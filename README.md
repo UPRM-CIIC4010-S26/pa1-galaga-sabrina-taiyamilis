@@ -11,8 +11,8 @@ Don't forget that you must also fill out an evaluation form in Moodle to conside
 
 ## Grading
 
-(STUDENT NUMBER HERE) (STUDENT NAME HERE) (STUDENT EMAIL HERE)
-(STUDENT NUMBER HERE) (STUDENT NAME HERE) (STUDENT EMAIL HERE)
+(802-21-2205) (Sabrina M. Ng Torres) (sabrina.ng@upr.edu)
+(802-23-7296) (Taiyamilis L. Martinez Garcia) (taiyamilis.martinez@upr.edu)
 
 Any project that doesn't compile will receive a 0.
 
