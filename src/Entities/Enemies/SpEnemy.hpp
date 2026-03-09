@@ -12,12 +12,14 @@ class SpEnemy : public Enemy {
         SpEnemy(float x, float y) : Enemy(x, y) { 
             this->cooldown = GetRandomValue(300, 1380); 
             this->health = 4;
+            this->scoreValue = 300; //special enemies give 300 points
         }
 
         SpEnemy(float x, float y, bool newSpawn) : Enemy(x, y){
             this->cooldown = GetRandomValue(360, 1380);
             this->health = 4;
             this->spawning = newSpawn;
+            this->scoreValue = 300; //special enemies give 300 points
         }
 
         void draw() override;

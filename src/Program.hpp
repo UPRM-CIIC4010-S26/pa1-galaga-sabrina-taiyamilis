@@ -19,6 +19,8 @@ class Program {
         int delay = 0;
         int lives = 3;
         int pauseFrames = 0;
+        int score = 0; //keeps track of the player's score
+        int nextLifeScore = 1000; //score needed to earn the next extra life
 
         bool startup = true;
         bool paused = false;

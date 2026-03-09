@@ -16,6 +16,7 @@ class Enemy {
         
     public:
         int health = 1;
+        int scoreValue = 0; // points this enemy gived when defeated
         std::pair<float, float> position;
         HitBox hitBox;
 
@@ -44,7 +45,10 @@ class Enemy {
              }
         }
 
-        static void ManageEnemies(HitBox target) {
+        static int ManageEnemies(HitBox target) {
+            
+            int gainedScore = 0; //store score earned from enemies defeated in this update
+            
             for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) {
                 p.first.first += (p.first.first == 0) ? 0 : direction;
                 if (p.second) {
@@ -58,6 +62,9 @@ class Enemy {
                     }
 
                     if (p.second->health <= 0) {
+
+                        gainedScore = gainedScore + p.second->scoreValue; //add this enemy's score value
+
                         Animation::animations.push_back(
                             Animation(p.second->position.first, p.second->position.second, 155, 0, 33, 33, 30, 30, 4, ImageManager::SpriteSheet)
                         );
@@ -79,5 +86,8 @@ class Enemy {
                 directionChange = 0;
                 direction *= -1;
             }
+
+            return gainedScore; //return total score earned from defeated enemies
+
         }
 };
