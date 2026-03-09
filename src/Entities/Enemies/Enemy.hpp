@@ -58,11 +58,14 @@ class Enemy {
                         if (p2.ID != 1 && HitBox::Collision(p.second->hitBox, p2.getHitBox())) {
                             p.second->health--;
                             p2.del = true;
+                            if (p.second->health > 0) {
+                                PlaySound(SoundManager::hit);  // Adds hit sound 
+                            }
                         }
                     }
 
                     if (p.second->health <= 0) {
-
+                        PlaySound(SoundManager::dead);  // Adds dead sound 
                         gainedScore = gainedScore + p.second->scoreValue; //add this enemy's score value
 
                         Animation::animations.push_back(
