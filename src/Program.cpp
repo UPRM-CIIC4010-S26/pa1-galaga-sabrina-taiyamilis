@@ -35,7 +35,7 @@ void Program::Update() {
     pauseFrames = std::max(pauseFrames - 1, 0);
 
     if (!startup && !paused && !gameOver && pauseFrames <= 0) {
-        Enemy::ManageEnemies(player->hitBox);
+        score = score + Enemy::ManageEnemies(player->hitBox); //add score earned from defeated enemies
         StdEnemy::attackReset();
         ManageEnemyRespawns();
         player->update();
@@ -58,16 +58,20 @@ void Program::Update() {
         for (Projectile& p : Projectile::projectiles) { 
             p.update(); 
 
-            if (p.ID == 1) {
-                if (HitBox::Collision(player->hitBox, p.getHitBox())) {
-                    PlayerReset();
-                }
-            }
         }
 
         if (lives <= 0 && pauseFrames <= 0) gameOver = true;
         Projectile::CleanProjectiles();
         Projectile::ProjectileCollision();
+
+        if(score >= nextLifeScore && lives < 5){
+          lives = lives + 1; // give the plater an extra life every 1000 points
+        }
+
+        if (score >= nextLifeScore) {
+            nextLifeScore = nextLifeScore + 1000; // move to the next score checkpoint
+        }
+
     }
 }
 
@@ -82,6 +86,7 @@ void Program::Draw() {
                    Vector2{0, 0}, 0, WHITE);
     }
 
+    DrawText(TextFormat("Score: %i",score), 20, 20, 30, WHITE); //display current score on screen
 
     for (Projectile p : Projectile::projectiles) p.draw();
     for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) if (p.second) p.second->draw();
@@ -167,6 +172,10 @@ void Program::KeyInputs() {
         startup = false;
     }
 
+    if(!startup && !paused && !gameOver && IsKeyPressed('K')){ 
+        score = score + 500; //test key: pressing K adds 500 points
+    }
+
     if (!startup && !paused && !gameOver && pauseFrames <= 0) player->keyInputs();
    
 }
@@ -185,27 +194,6 @@ void Program::PlayerReset() {
 
 void Program::Reset() {
     Enemy::enemies.clear();
-    Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
-            std::pair<float, float>{350, 150}, 
-            new SpEnemy(350, 150)
-        });
-
-    Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
-            std::pair<float, float>{600, 150}, 
-            new SpEnemy(600, 150)
-        });
-
-    for (int i = 0; i < 30; i++) {
-        float x = 250 + 50 * ( i % 10 ) ; //to reset every 10 enemies
-        float y = 200 + 50 * ( i / 10 ); //to go down 1 row every 10 enemies
-
-        Enemy::enemies.push_back(std::pair<std::pair<float, float>, Enemy*> {
-            std::pair<float, float>{x, y}, 
-            new StdEnemy(x, y)
-        });
-    }
-
-
     StdEnemy::attackInProgress = false;
     player = new Player((GetScreenWidth() / 2) - 15, GetScreenHeight() * 0.75f);
     respawnCooldown = 1080;
@@ -213,4 +201,6 @@ void Program::Reset() {
     count = 0;
     delay = 0;
     lives = 3;
+    score = 0; //reset score to 0 wehn restart the game
+    nextLifeScore = 1000; //reset the next life checkpoint
 }
