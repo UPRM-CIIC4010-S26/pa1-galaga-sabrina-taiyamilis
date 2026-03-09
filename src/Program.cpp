@@ -70,7 +70,7 @@ void Program::Update() {
         Projectile::ProjectileCollision();
 
         if(score >= nextLifeScore && lives < 5){
-          lives = lives + 1; // give the plater an extra life every 1000 points
+          lives = lives + 1; // give the player an extra life every 1000 points
         }
 
         if (score >= nextLifeScore) {
