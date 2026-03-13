@@ -36,6 +36,9 @@ void Program::Update() {
 
     if (!startup && !paused && !gameOver && pauseFrames <= 0) {
         score = score + Enemy::ManageEnemies(player->hitBox); //add score earned from defeated enemies
+        if (score > highScore){ 
+            highScore = score; 
+        }
         StdEnemy::attackReset();
         ManageEnemyRespawns();
         player->update();
@@ -92,6 +95,7 @@ void Program::Draw() {
     }
 
     DrawText(TextFormat("Score: %i",score), 20, 20, 30, WHITE); //display current score on screen
+    DrawText(TextFormat("Highest Score: %i",highScore), 20, 55, 30, RED); //display highest score 
 
     for (Projectile p : Projectile::projectiles) p.draw();
     for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) if (p.second) p.second->draw();

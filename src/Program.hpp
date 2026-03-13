@@ -21,6 +21,7 @@ class Program {
         int pauseFrames = 0;
         int score = 0; //keeps track of the player's score
         int nextLifeScore = 1000; //score needed to earn the next extra life
+        int highScore = 0; //Bonus - Adding high score 
 
         bool startup = true;
         bool paused = false;
