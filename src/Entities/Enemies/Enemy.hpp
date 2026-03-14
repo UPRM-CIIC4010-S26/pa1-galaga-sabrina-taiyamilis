@@ -93,4 +93,19 @@ class Enemy {
             return gainedScore; //return total score earned from defeated enemies
 
         }
+        static void BulletHellAttack() {
+            for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) {
+                if (!p.second) continue;
+
+        // Each enemy fires every ~90 frames randomly to avoid all firing at once
+                if (GetRandomValue(0, 90) == 0) {
+                    float ex = p.second->position.first + 15;
+                    float ey = p.second->position.second + 15;
+
+            // 2-way spread downward
+                    Projectile::projectiles.push_back(Projectile(ex - 10, ey, 1));  // left bullet
+                    Projectile::projectiles.push_back(Projectile(ex + 10, ey, 1));  // right bullet
+        }
+    }
+}
 };

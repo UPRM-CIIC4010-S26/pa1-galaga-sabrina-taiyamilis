@@ -22,7 +22,10 @@ class Program {
         int score = 0; //keeps track of the player's score
         int nextLifeScore = 1000; //score needed to earn the next extra life
         int highScore = 0; //Bonus - Adding high score 
-
+        int bulletHellScoreThreshold = 3000; //Bonus (New Game Mode) - adding variable
+        int bulletHellWarningFrames = 0; 
+        
+        bool bulletHell = false;
         bool startup = true;
         bool paused = false;
         bool gameOver = false;

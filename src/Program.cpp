@@ -39,7 +39,16 @@ void Program::Update() {
         if (score > highScore){ 
             highScore = score; 
         }
+
+        // Activate Bullet Hell mode at score threshold
+        if (!bulletHell && score >= bulletHellScoreThreshold) {
+            bulletHell = true;
+            bulletHellWarningFrames = 180; // show warning for 3 seconds
+        }
+        if (bulletHellWarningFrames > 0) bulletHellWarningFrames--;
+
         StdEnemy::attackReset();
+        if (bulletHell) Enemy::BulletHellAttack();
         ManageEnemyRespawns();
         player->update();
 
@@ -81,6 +90,7 @@ void Program::Update() {
         }
 
     }
+
 }
 
 void Program::Draw() {
@@ -100,6 +110,17 @@ void Program::Draw() {
     for (Projectile p : Projectile::projectiles) p.draw();
     for (std::pair<std::pair<float, float>, Enemy*>& p : Enemy::enemies) if (p.second) p.second->draw();
 
+    // Draw Bullet Hell indicator
+    if (bulletHell) {
+        DrawText("!! BULLET HELL !!", GetScreenWidth() / 2 - 180, 90, 30, RED);
+    }
+
+// Draw flashing warning when mode first activates
+    if (bulletHellWarningFrames > 0) {
+        int alpha = (bulletHellWarningFrames % 20 < 10) ? 255 : 0; // flashing effect
+        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Color{180, 0, 0, 60});
+        DrawText("!! BULLET HELL !!", GetScreenWidth() / 2 - 240, GetScreenHeight() / 2 - 60, 64, Color{255, 50, 50, (unsigned char)alpha});
+    }
     if (startup) DrawStartup();
     if (paused) DrawPauseScreen();
     if (gameOver) DrawGameOver();
@@ -233,4 +254,6 @@ void Program::Reset() {
     lives = 3;
     score = 0; //reset score to 0 wehn restart the game
     nextLifeScore = 1000; //reset the next life checkpoint
+    bulletHell = false; 
+    bulletHellWarningFrames = 0;
 }

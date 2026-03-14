@@ -30,6 +30,15 @@ class Projectile {
             this->ID = ID;
         }
 
+        Projectile(float x, float y, float angle, int speed, int ID) {
+            this->position.first = x;
+            this->position.second = y;
+            this->hitBox = HitBox(x, y, 2, 5);
+            this->angle = angle;
+            this->speed = speed;
+            this->ID = ID;
+        }
+
         HitBox getHitBox() { return hitBox; }
         std::pair<double, double> getPosition() { return position; }
 
